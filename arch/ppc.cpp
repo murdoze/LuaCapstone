@@ -1,5 +1,5 @@
 #include "ppc.h"
-
+/*
 static int luacapstone_crxoperand_metaIndex(lua_State* l)
 {
     ppc_op_crx* crxop = *((ppc_op_crx**)lua_touserdata(l, 1));
@@ -98,3 +98,5 @@ void luaCS_pushppcstruct(lua_State *l, cs_ppc *ppc)
 {
     lua_pushcstruct(l, ppc, &luacapstone_ppc_metaIndex, "__detail_ppc");
 }
+*/
+

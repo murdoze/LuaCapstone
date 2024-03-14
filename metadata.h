@@ -5,9 +5,9 @@
 #include "reflection.h"
 
 /* Arm64 Metadata */
-DeclareStructureInfo(arm64_op_mem)
-DeclareStructureInfo(cs_arm64_op)
-DeclareStructureInfo(cs_arm64)
+DeclareStructureInfo(aarch64_op_mem)
+DeclareStructureInfo(cs_aarch64_op)
+DeclareStructureInfo(cs_aarch64)
 
 /* Arm Metadata */
 DeclareStructureInfo(arm_op_mem)
@@ -20,10 +20,10 @@ DeclareStructureInfo(cs_mips_op)
 DeclareStructureInfo(cs_mips)
 
 /* PPC Metaata */
-DeclareStructureInfo(ppc_op_crx)
-DeclareStructureInfo(ppc_op_mem)
-DeclareStructureInfo(cs_ppc_op)
-DeclareStructureInfo(cs_ppc)
+//DeclareStructureInfo(ppc_op_crx)
+//DeclareStructureInfo(ppc_op_mem)
+//DeclareStructureInfo(cs_ppc_op)
+//DeclareStructureInfo(cs_ppc)
 
 /* SPARC Metadata */
 DeclareStructureInfo(sparc_op_mem)

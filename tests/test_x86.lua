@@ -14,7 +14,7 @@ local count, insn = capstone.disasm(handle, X86Code32, #X86Code32, 0x00400000)
 print("Disassembled " .. count .. " instructions")
 
 for i = 1, count do
-  print(string.format("%08X %s %s", insn[i].address, string.upper(insn[i].mnemonic), insn[i].op_str))
+  print(string.format("%08X %s %s", insn[i].address, string.upper(insn[i].mnemonic), insn[i].op_str), insn[i].detail.regs_write_count, insn[i].detail.regs_read_count)
 end
 
 capstone.free(insn, count)

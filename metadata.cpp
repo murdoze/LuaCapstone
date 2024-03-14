@@ -1,34 +1,36 @@
 #include "metadata.h"
 
 /* Arm64 Metadata */
-BeginStructureInfo(arm64_op_mem)
-    StructureField(arm64_op_mem, unsigned int, base),
-    StructureField(arm64_op_mem, unsigned int, index),
-    StructureField(arm64_op_mem, int32_t, disp)
-EndStructureInfo(arm64_op_mem)
+BeginStructureInfo(aarch64_op_mem)
+    StructureField(aarch64_op_mem, unsigned int, base),
+    StructureField(aarch64_op_mem, unsigned int, index),
+    StructureField(aarch64_op_mem, int32_t, disp)
+EndStructureInfo(aarch64_op_mem)
 
-BeginStructureInfo(cs_arm64_op)
-    StructureField(cs_arm64_op, int, vector_index),
-    StructureField(cs_arm64_op, arm64_vas, vas),
-    StructureField(cs_arm64_op, arm64_vess, vess),
-    StructureField(cs_arm64_op, arm64_shifter, shift.type),
-    StructureField(cs_arm64_op, unsigned int, shift.value),
-    StructureField(cs_arm64_op, unsigned int, reg),
-    StructureField(cs_arm64_op, int64_t, imm),
-    StructureField(cs_arm64_op, arm64_op_mem, mem),
-    StructureField(cs_arm64_op, arm64_pstate, pstate),
-    StructureField(cs_arm64_op, unsigned int, sys),
-    StructureField(cs_arm64_op, arm64_prefetch_op, prefetch),
-    StructureField(cs_arm64_op, arm64_barrier_op, barrier)
-EndStructureInfo(cs_arm64_op)
+BeginStructureInfo(cs_aarch64_op)
+    StructureField(cs_aarch64_op, int, vector_index),
+    StructureField(cs_aarch64_op, AArch64Layout_VectorLayout, vas),
+    StructureField(cs_aarch64_op, aarch64_shifter, shift.type),
+    StructureField(cs_aarch64_op, unsigned int, shift.value),
+    StructureField(cs_aarch64_op, aarch64_extender, ext),
+    StructureField(cs_aarch64_op, aarch64_op_type, type),
+    StructureField(cs_aarch64_op, aarch64_reg, reg),
+    StructureField(cs_aarch64_op, int64_t, imm),
+    StructureField(cs_aarch64_op, aarch64_imm_range, imm_range),
+    StructureField(cs_aarch64_op, double, fp),
+    StructureField(cs_aarch64_op, aarch64_op_mem, mem),
+    StructureField(cs_aarch64_op, aarch64_sysop, sysop),
+    StructureField(cs_aarch64_op, aarch64_op_sme, sme)
+EndStructureInfo(cs_aarch64_op)
 
-BeginStructureInfo(cs_arm64)
-    StructureField(cs_arm64, arm64_cc, cc),
-    StructureField(cs_arm64, bool, update_flags),
-    StructureField(cs_arm64, bool, writeback),
-    StructureField(cs_arm64, uint8_t, op_count),
-    StructureField(cs_arm64, cs_arm_op[8], operands)
-EndStructureInfo(cs_arm64)
+BeginStructureInfo(cs_aarch64)
+    StructureField(cs_aarch64, AArch64CC_CondCode, cc),
+    StructureField(cs_aarch64, bool, update_flags),
+    StructureField(cs_aarch64, bool, post_index),
+    StructureField(cs_aarch64, bool, is_doing_sme),
+    StructureField(cs_aarch64, uint8_t, op_count),
+    StructureField(cs_aarch64, cs_aarch64_op, operands[MAX_AARCH64_OPS])
+EndStructureInfo(cs_aarch64)
 
 /* ARM Metadata */
 BeginStructureInfo(arm_op_mem)
@@ -57,12 +59,14 @@ BeginStructureInfo(cs_arm)
     StructureField(cs_arm, arm_vectordata_type, vector_data),
     StructureField(cs_arm, arm_cpsmode_type, cps_mode),
     StructureField(cs_arm, arm_cpsflag_type, cps_flag),
-    StructureField(cs_arm, arm_cc, cc),
+    StructureField(cs_arm, ARMCC_CondCodes, cc),
+    StructureField(cs_arm, ARMVCC_VPTCodes, vcc),
     StructureField(cs_arm, bool, update_flags),
-    StructureField(cs_arm, bool, writeback),
-    StructureField(cs_arm, arm_mem_barrier, mem_barrier),
+    StructureField(cs_arm, bool, post_index),
+    StructureField(cs_arm, int, mem_barrier),
+    StructureField(cs_arm, uint8_t, pred_mask),
     StructureField(cs_arm, uint8_t, op_count),
-    StructureField(cs_arm, cs_arm_op[36], operands),
+    StructureField(cs_arm, cs_arm_op, operands[MAX_ARM_OPS])
 EndStructureInfo(cs_arm)
 
 /* Mips Metadata */
@@ -84,6 +88,7 @@ BeginStructureInfo(cs_mips)
 EndStructureInfo(cs_mips)
 
 /* PPC Metadata */
+/*
 BeginStructureInfo(ppc_op_crx)
     StructureField(ppc_op_crx, unsigned int, scale),
     StructureField(ppc_op_crx, unsigned int, reg),
@@ -110,6 +115,7 @@ BeginStructureInfo(cs_ppc)
     StructureField(cs_ppc, uint8_t, op_count),
     StructureField(cs_ppc, cs_ppc_op[8], operands)
 EndStructureInfo(cs_ppc)
+*/
 
 /* SPARC Metadata */
 BeginStructureInfo(sparc_op_mem)
@@ -166,9 +172,9 @@ BeginStructureInfo(cs_x86_op)
     StructureField(cs_x86_op, x86_op_type, type),
     StructureField(cs_x86_op, unsigned int, reg),
     StructureField(cs_x86_op, int64_t, imm),
-    StructureField(cs_x86_op, double, fp),
     StructureField(cs_x86_op, x86_op_mem, mem),
     StructureField(cs_x86_op, uint8_t, size),
+    StructureField(cs_x86_op, uint8_t, access),
     StructureField(cs_x86_op, x86_avx_bcast, avx_bcast),
     StructureField(cs_x86_op, bool, avx_zero_opmask)
 EndStructureInfo(cs_x86_op)
@@ -214,14 +220,15 @@ EndStructureInfo(cs_xcore)
 
 /* Capstone Metadata */
 BeginStructureInfo(cs_detail)
-    StructureField(cs_detail, uint8_t[12], regs_read),
+    StructureField(cs_detail, uint16_t[MAX_IMPL_R_REGS], regs_read),
     StructureField(cs_detail, uint8_t, regs_read_count),
-    StructureField(cs_detail, uint8_t[20], regs_write),
+    StructureField(cs_detail, uint16_t[MAX_IMPL_W_REGS], regs_write),
     StructureField(cs_detail, uint8_t, regs_write_count),
-    StructureField(cs_detail, uint8_t[8], groups),
+    StructureField(cs_detail, uint8_t[MAX_NUM_GROUPS], groups),
     StructureField(cs_detail, uint8_t, groups_count),
+    StructureField(cs_detail, bool, writeback),
     StructureField(cs_detail, cs_x86, x86),
-    StructureField(cs_detail, cs_arm64, arm64),
+    StructureField(cs_detail, cs_aarch64, aarch64),
     StructureField(cs_detail, cs_arm, arm),
     StructureField(cs_detail, cs_mips, mips),
     StructureField(cs_detail, cs_ppc, ppc),
@@ -234,7 +241,7 @@ BeginStructureInfo(cs_insn)
     StructureField(cs_insn, unsigned int, id),
     StructureField(cs_insn, uint64_t, address),
     StructureField(cs_insn, uint16_t, size),
-    StructureField(cs_insn, uint8_t[16], bytes),
+    StructureField(cs_insn, uint8_t[24], bytes),
     StructureField(cs_insn, char[32], mnemonic),
     StructureField(cs_insn, char[160], op_str),
     StructureField(cs_insn, cs_detail*, detail)

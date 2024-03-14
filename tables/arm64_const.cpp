@@ -1089,13 +1089,13 @@ void set_arm64_const(lua_State* l)
 	lua_setfield(l, -2, "ARM64_REG_ENDING");
 
 	/* alias registers */
-	lua_pushinteger(l, ARM64_REG_X16);
+	lua_pushinteger(l, AArch64_REG_X16);
 	lua_setfield(l, -2, "ARM64_REG_IP1");
-	lua_pushinteger(l, ARM64_REG_X17);
+	lua_pushinteger(l, AArch64_REG_X17);
 	lua_setfield(l, -2, "ARM64_REG_IP0");
-	lua_pushinteger(l, ARM64_REG_X29);
+	lua_pushinteger(l, AArch64_REG_X29);
 	lua_setfield(l, -2, "ARM64_REG_FP");
-	lua_pushinteger(l, ARM64_REG_X30);
+	lua_pushinteger(l, AArch64_REG_X30);
 	lua_setfield(l, -2, "ARM64_REG_LR");
 
 	/* ARM64 instruction */

@@ -28,7 +28,7 @@ typedef struct CapstoneIterator
 
 DeclareStructureInfo(CapstoneIterator)
 
-int luaopen_capstone(lua_State* l);
+extern "C" int luaopen_capstone(lua_State* l);
 
 #endif // LUACAPSTONE_H
 

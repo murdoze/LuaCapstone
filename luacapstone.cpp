@@ -46,13 +46,13 @@ static int luacapstone_detail_metaIndex(lua_State* l)
         if(IsField(fi, "x86"))
             luaCS_pushx86struct(l, &(detail->x86));
         else if(IsField(fi, "arm64"))
-            luaCS_pusharm64struct(l, &(detail->arm64));
+            luaCS_pushaarch64struct(l, &(detail->aarch64));
         else if(IsField(fi, "arm"))
             luaCS_pusharmstruct(l, &(detail->arm));
         else if(IsField(fi, "mips"))
             luaCS_pushmipsstruct(l, &(detail->mips));
-        else if(IsField(fi, "ppc"))
-            luaCS_pushppcstruct(l, &(detail->ppc));
+        //else if(IsField(fi, "ppc"))
+        //    luaCS_pushppcstruct(l, &(detail->ppc));
         else if(IsField(fi, "sparc"))
             luaCS_pushsparcstruct(l, &(detail->sparc));
         else if(IsField(fi, "sysz"))
@@ -265,7 +265,16 @@ static int luacapstone_disasmiter(lua_State* l)
     EXPECT_TYPE(LUA_TUSERDATA, 2);
 
     CapstoneIterator* it = (CapstoneIterator*)lua_touserdata(l, 2);
-    bool res = cs_disasm_iter((csh)lua_tointeger(l, 1), &(it->code), &(it->codesize), &(it->address), it->insn);
+    csh handle = (csh)lua_tointeger(l, 1);
+    bool res = cs_disasm_iter(handle, &(it->code), &(it->codesize), &(it->address), it->insn);
+    if (res)
+    {	
+	// We cannot return false here on error, since it will abort iterator
+        // This function can only (?) error on an invalid instruction when SKIPDATA option is ON
+        cs_regs_access(handle, it->insn, 
+            it->insn->detail->regs_read, &it->insn->detail->regs_read_count,
+            it->insn->detail->regs_write, &it->insn->detail->regs_write_count) == CS_ERR_OK;
+    }
     lua_pushboolean(l, res);
     return 1;
 }
@@ -460,9 +469,13 @@ int luaregister_capstone(lua_State* l)
     #if LUA_VERSION_NUM >= 502
         luaL_newlib(l, luacapstone_lib);
     #else
-        luaL_register(l, LUACAPSTONE_LIBNAME, luacapstone_lib);
+printf("1");	
+        luaL_newlib(l, luacapstone_lib);
+printf("2");	
+        //luaL_register(l, LUACAPSTONE_LIBNAME, luacapstone_lib);
     #endif
 
+printf("3");	
     set_capstone_const(l);
     set_arm64_const(l);
     set_arm_const(l);
@@ -472,17 +485,19 @@ int luaregister_capstone(lua_State* l)
     set_sysz_const(l);
     set_x86_const(l);
     set_xcore_const(l);
+printf("4");	
 
     #if LUA_VERSION_NUM < 502
-        lua_pop(l, 1);
+        //lua_pop(l, 1);
     #endif
 
     return 1;
 }
 
-int luaopen_capstone(lua_State *l)
+extern "C" int luaopen_capstone(lua_State *l)
 {
     #if LUA_VERSION_NUM >= 502
+        #error LUA_VERSION_NUM >= 502
         luaL_requiref(l, LUACAPSTONE_LIBNAME, &luaregister_capstone, false);
         lua_pop(l, 1);
         return 1;

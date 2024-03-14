@@ -37,7 +37,7 @@ void set_capstone_const(lua_State *l)
 
     lua_pushinteger(l, CS_ARCH_ARM);
     lua_setfield(l, -2, "CS_ARCH_ARM");
-    lua_pushinteger(l, CS_ARCH_ARM64);
+    lua_pushinteger(l, CS_ARCH_AARCH64);
     lua_setfield(l, -2, "CS_ARCH_ARM64");
     lua_pushinteger(l, CS_ARCH_MIPS);
     lua_setfield(l, -2, "CS_ARCH_MIPS");
@@ -80,8 +80,8 @@ void set_capstone_const(lua_State *l)
     lua_setfield(l, -2, "CS_MODE_MIPS3");
     lua_pushinteger(l, CS_MODE_MIPS32R6);
     lua_setfield(l, -2, "CS_MODE_MIPS32R6");
-    lua_pushinteger(l, CS_MODE_MIPSGP64);
-    lua_setfield(l, -2, "CS_MODE_MIPSGP64");
+    lua_pushinteger(l, CS_MODE_MIPS2);
+    lua_setfield(l, -2, "CS_MODE_MIPS2");
     lua_pushinteger(l, CS_MODE_V9);
     lua_setfield(l, -2, "CS_MODE_V9");
     lua_pushinteger(l, CS_MODE_BIG_ENDIAN);
